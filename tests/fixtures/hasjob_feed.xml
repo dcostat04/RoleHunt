@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Hasjob</title>
+  <id>https://hasjob.co/</id>
+  <updated>2026-11-24T05:00:00Z</updated>
+  <entry>
+    <title type="text">Product Manager - Growth at Zerodha (Bangalore)</title>
+    <id>https://hasjob.co/bangalore/x7k2p</id>
+    <link rel="alternate" href="https://hasjob.co/bangalore/x7k2p"/>
+    <published>2026-11-23T10:00:00Z</published>
+    <updated>2026-11-23T10:00:00Z</updated>
+    <author><name>Zerodha</name></author>
+    <content type="html">&lt;p&gt;Location: Bangalore&lt;/p&gt;&lt;p&gt;Own growth experiments across our investing apps. 3-6 years of PM experience.&lt;/p&gt;</content>
+  </entry>
+  <entry>
+    <title type="text">Senior Backend Engineer at Setu (Remote)</title>
+    <id>https://hasjob.co/remote/a1b2c</id>
+    <link rel="alternate" href="https://hasjob.co/remote/a1b2c"/>
+    <published>2026-11-23T09:00:00Z</published>
+    <content type="html">&lt;p&gt;Go, Postgres.&lt;/p&gt;</content>
+  </entry>
+</feed>

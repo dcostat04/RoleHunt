@@ -1,0 +1,108 @@
+# Job Scout configuration. Secrets (API keys, SMTP password) come from environment
+# variables, never from this file. See README.md.
+
+# Who you are and what you want. This is sent to the LLM as scoring context,
+# so be specific: seniority, domains, deal-breakers.
+profile: |
+  Product Manager with ~4 years of experience in B2B SaaS and consumer fintech.
+  Looking for Product Manager / Senior Product Manager roles at product-led startups
+  and scale-ups. Strong on discovery, analytics (SQL, Amplitude) and working with
+  engineering on technical products (APIs, developer tools, AI features).
+  Based in Bengaluru, India. Open to remote roles that hire in India, or on-site/hybrid
+  in Bengaluru. Not interested in: project/program management, pure product marketing,
+  sales roles, internships, or roles requiring 10+ years of experience.
+
+sources:
+  linkedin: true
+  hackernews: true
+  twitter: true      # needs X_BEARER_TOKEN, skipped otherwise
+  wellfound: true
+  hasjob: true
+
+search:
+  # Queries sent to LinkedIn and X.
+  queries:
+    - product manager
+    - senior product manager
+    - associate product manager
+  # LinkedIn location strings, one search per query x location.
+  linkedin_locations:
+    - India
+    - Bengaluru, Karnataka, India
+  # Only LinkedIn postings newer than this (they also support f_WT=2 for remote).
+  max_age_hours: 24
+  linkedin_pages: 3          # 25 results per page
+  # Wellfound role/location slugs: wellfound.com/role/l/<role>/<location>
+  wellfound_role: product-manager
+  wellfound_locations:
+    - india
+    - bangalore
+    - remote
+
+# Stage 1: cheap keyword pre-filter on the job title.
+keywords:
+  include:
+    - product manager
+    - product management
+    - product lead
+    - head of product
+    - product owner
+    - apm
+    - "pm"
+  exclude:
+    - intern
+    - internship
+    - project manager
+    - program manager
+    - product marketing
+    - marketing manager
+    - sales manager
+    - engineer
+    - designer
+    - recruiter
+    - vp
+    - director
+
+# Stage 2: location matching. A job passes if its location (or, when the
+# source has no structured location, its title/description) mentions any of these.
+locations:
+  allow:
+    - remote
+    - india
+    - bengaluru
+    - bangalore
+    - anywhere
+    - worldwide
+    - apac
+    - asia
+  # Phrases that disqualify a job even if an allowed term also appears.
+  deny:
+    - us only
+    - usa only
+    - us-only
+    - must be located in the us
+    - eu only
+    - uk only
+  # Keep jobs with no location information at all and let the LLM decide.
+  allow_unknown: true
+
+# Stage 3: Gemini Flash scoring.
+llm:
+  model: gemini-2.5-flash
+  min_score: 7          # 0-10, keep jobs scoring at least this
+  batch_size: 10        # jobs per API call
+  concurrency: 3        # parallel API calls
+  # If GEMINI_API_KEY is missing or the LLM fails, send jobs unscored rather than nothing.
+  fail_open: true
+
+dedup:
+  history_file: data/seen_jobs.json
+  retention_days: 45
+
+email:
+  subject_prefix: "Job Scout"
+  max_jobs: 50
+
+http:
+  timeout_seconds: 25
+  max_concurrency: 8
